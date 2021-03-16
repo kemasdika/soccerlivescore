@@ -1,7 +1,7 @@
 export const fetchFinished = () => {
     var currentDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
     var day = currentDate.getDate()
-    var month = currentDate.getMonth() - 1
+    var month = currentDate.getMonth() + 1
     var year = currentDate.getFullYear()
     var newDay = day > 9 ? `${day}` : `0${day}`
     var newMonth = month > 9 ? `${month}` : `0${month}`
