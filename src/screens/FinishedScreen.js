@@ -15,7 +15,6 @@ import {FinishedCard} from '../components/FinishedCard'
 import { fetchFinished } from '../store/actions/FinishedAction'
 import {fetchUpcoming} from '../store/actions/UpcomingAction'
 import {useSelector, useDispatch} from 'react-redux'
-import AnimatedLoader from "react-native-animated-loader";
 const windowWidth = Dimensions.get('window').width;
 
 export const FinishedSreen = ({navigation}) => {
