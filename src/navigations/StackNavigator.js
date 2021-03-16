@@ -2,7 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import {UpcomingScreen} from "../screens/UpcomingScreen";
-import {FinishedSreen} from "../screens/FinishedSreen";
+import {FinishedSreen} from "../screens/FinishedScreen";
 import {DetailScreen} from "../screens/DetailScreen";
 
 const Stack = createStackNavigator();

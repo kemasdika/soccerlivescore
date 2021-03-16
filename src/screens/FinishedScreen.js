@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import React from 'react'
 import {View, Text, StyleSheet,Dimensions,SafeAreaView, StatusBar, ScrollView,ImageBackground } from "react-native";
 import { 
     useFonts,
@@ -11,18 +11,10 @@ import {
     Montserrat_600SemiBold,
 } from '@expo-google-fonts/montserrat'
 import AppLoading  from 'expo-app-loading'
-import {UpcomingCard} from '../components/UpcomingCard'
-import {fetchUpcoming} from '../store/actions/UpcomingAction'
-import {useSelector, useDispatch} from 'react-redux'
+import {FinishedCard} from '../components/FinishedCard'
 const windowWidth = Dimensions.get('window').width;
 
-export const UpcomingScreen = () => {
-    const {upcoming, isLoading} = useSelector((state) => state.upcoming)
-    const dispatch = useDispatch()
-    useEffect(() => {
-        dispatch(fetchUpcoming())
-    },[])
-
+export const FinishedSreen = ({navigation}) => {
     let [fontsLoaded] = useFonts({
         Teko_400Regular,
         Teko_600SemiBold,
@@ -37,22 +29,12 @@ export const UpcomingScreen = () => {
         <View style={styles.center}>
             <StatusBar barStyle="light-content"></StatusBar>
             <SafeAreaView>
-            { isLoading ? 
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                    <Text>Loading ...</Text>
-                </View>
-                :
                 <ImageBackground source={require('../../assets/bg1.jpg')} style={styles.image}>
-                <Text style={styles.header}>UPCOMING MATCH</Text>
-                    <ScrollView showsVerticalScrollIndicator={false}>
-                        {
-                            upcoming.map(item => {
-                                return <UpcomingCard key={item.gameId} item={item}/>
-                            })
-                        }
+                    <Text style={styles.header}>FINISHED MATCH</Text>
+                    <ScrollView>
+                        <FinishedCard navigation={navigation}/>
                     </ScrollView>
                 </ImageBackground>
-            }
             </SafeAreaView>
         </View>
     )
@@ -61,7 +43,7 @@ export const UpcomingScreen = () => {
 const styles = StyleSheet.create({
     center: {
       flex: 1,
-      alignItems:'center'
+      alignItems: "center",
     },
     image: {
         flex: 1,
