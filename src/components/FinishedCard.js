@@ -14,7 +14,7 @@ import {
 import AppLoading  from 'expo-app-loading'
 const windowWidth = Dimensions.get('window').width;
 
-export const FinishedCard = ({navigation}) => {
+export const FinishedCard = ({navigation,item}) => {
     let [fontsLoaded] = useFonts({
         Teko_400Regular,
         Teko_600SemiBold,
@@ -26,22 +26,22 @@ export const FinishedCard = ({navigation}) => {
         return <AppLoading />;
     }
     const gotoDetail = () => {
-        navigation.navigate('Detail')
+        navigation.navigate('Detail',{id:item.gameId})
       }
     return (
         <Card style={styles.card}>
             <Card.Content style={{alignItems:'center'}}>
-                <Title style={{ fontFamily:'Teko_400Regular'}}>14/30/2021</Title>
-                <Paragraph style={{ fontFamily:'Teko_400Regular', fontSize:20, paddingTop:5}}>UCL</Paragraph>
-                <View style={{flexDirection:'row', paddingBottom:(windowWidth/50)}}>
-                    <View style={{marginRight:(windowWidth/10), marginTop:(-windowWidth/20), alignItems:'center'}}>
-                        <Avatar.Image size={windowWidth/5} source={{uri :'https://picsum.photos/700'}} />
-                        <Paragraph style={{fontFamily:'Montserrat_400Regular'}}>Barcelona</Paragraph>
+            <Title style={{ fontFamily:'Teko_400Regular', marginTop:(-windowWidth/40)}}>{item.matchTime}</Title>
+            <Paragraph style={{ fontFamily:'Teko_400Regular', fontSize:15, paddingTop:0}}>{item.eventName}</Paragraph>
+                <View style={{flexDirection:'row', paddingBottom:(windowWidth/50),justifyContent:'space-between',width:windowWidth-80}}>
+                    <View style={{ marginTop:(-windowWidth/50), alignItems:'center',width:100}}>
+                        <Avatar.Image size={windowWidth/5} source={{uri : item.homeTeamEvent.logoUrl}} style={{backgroundColor:'#FFFFFF'}}/>
+                        <Paragraph style={{fontFamily:'Montserrat_400Regular',fontSize:12,textAlign:'center'}}>{item.homeTeamEvent.name}</Paragraph>
                     </View>
-                    <Paragraph style={{fontSize:40,paddingTop:40,fontFamily:'Teko_700Bold'}}>1 - 1</Paragraph>
-                    <View style={{marginLeft:(windowWidth/10), marginTop:(-windowWidth/20), alignItems:'center'}}>
-                        <Avatar.Image size={windowWidth/5}  source={{uri :'https://picsum.photos/700'}} />
-                        <Paragraph style={{fontFamily:'Montserrat_400Regular'}}>Real Madrid</Paragraph>
+                    <Paragraph style={{fontSize:30,paddingTop:30,fontFamily:'Teko_700Bold'}}>{item.homeTeamEvent.score}-{item.awayTeamEvent.score}</Paragraph>
+                    <View style={{ marginTop:(-windowWidth/50), alignItems:'center',width:100}}>
+                        <Avatar.Image size={windowWidth/5}  source={{uri : item.awayTeamEvent.logoUrl}} style={{backgroundColor:'#FFFFFF'}} />
+                        <Paragraph style={{fontFamily:'Montserrat_400Regular',fontSize:12,fontSize:12,textAlign:'center'}}>{item.awayTeamEvent.name}</Paragraph>
                     </View>
                 </View>
             </Card.Content>

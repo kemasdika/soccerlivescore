@@ -1,6 +1,6 @@
-import React from 'react'
-import {View, Text, StyleSheet,Dimensions,SafeAreaView, StatusBar, ScrollView,ImageBackground } from "react-native";
-import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
+import React,{useEffect} from 'react'
+import {View, Text, StyleSheet,Dimensions,SafeAreaView, StatusBar, ImageBackground } from "react-native";
+import { Avatar, Card, Title, Paragraph } from 'react-native-paper';
 import { 
     useFonts,
     Teko_400Regular,
@@ -12,10 +12,23 @@ import {
     Montserrat_600SemiBold,
 } from '@expo-google-fonts/montserrat'
 import AppLoading  from 'expo-app-loading'
-const windowWidth = Dimensions.get('window').width;
 import { AntDesign } from '@expo/vector-icons';
+import { fetchDetail } from '../store/actions/FinishedAction'
+import {fetchUpcoming} from '../store/actions/UpcomingAction'
+import {useSelector, useDispatch} from 'react-redux'
+const windowWidth = Dimensions.get('window').width;
 
-export const DetailScreen = ({navigation}) => {
+export const DetailScreen = ({navigation,route}) => {
+    const {id} = route.params;
+    const {detail, isLoading} = useSelector((state) => state.finished)
+    // console.log(id)
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(fetchDetail(id))
+    },[])
+    useEffect(() => {
+        dispatch(fetchUpcoming())
+    },[])
     let [fontsLoaded] = useFonts({
         Teko_400Regular,
         Teko_600SemiBold,
@@ -33,6 +46,11 @@ export const DetailScreen = ({navigation}) => {
         <View style={styles.center}>
            <StatusBar barStyle="light-content"></StatusBar>
             <SafeAreaView>
+            { isLoading ? 
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                    <Text>Loading ...</Text>
+                </View>
+                :
                 <ImageBackground source={require('../../assets/bg1.jpg')} style={styles.image}>
                 <View style={styles.header}>
                     <AntDesign name="arrowleft" size={24} color="#FEA443" onPress={gotoBack}/>
@@ -40,71 +58,90 @@ export const DetailScreen = ({navigation}) => {
                 </View>
                 <Card style={styles.card}>
                     <Card.Content style={{alignItems:'center'}}>
-                        <Title style={{ fontFamily:'Teko_400Regular'}}>14/30/2021</Title>
-                        <Paragraph style={{ fontFamily:'Teko_400Regular', fontSize:20, paddingTop:5}}>UCL</Paragraph>
-                        <View style={{flexDirection:'row', paddingBottom:(windowWidth/50)}}>
-                            <View style={{marginRight:(windowWidth/10), marginTop:(-windowWidth/20), alignItems:'center'}}>
-                                <Avatar.Image size={windowWidth/5} source={{uri :'https://picsum.photos/700'}} />
-                                <Paragraph style={{fontFamily:'Montserrat_400Regular'}}>Barcelona</Paragraph>
+                    <Title style={{ fontFamily:'Teko_400Regular', marginTop:(-windowWidth/40)}}>{detail.info.matchTimes}</Title>
+                    <Paragraph style={{ fontFamily:'Teko_400Regular', fontSize:15, paddingTop:0}}>{detail.matchevent.name_en}</Paragraph>
+                        <View style={{flexDirection:'row', paddingBottom:(windowWidth/50),justifyContent:'space-between',width:windowWidth-80}}>
+                            <View style={{ marginTop:(-windowWidth/50), alignItems:'center',width:100}}>
+                                <Avatar.Image size={windowWidth/5} source={{uri : detail.home_team.logo}} style={{backgroundColor:'#FFFFFF'}}/>
+                                <Paragraph style={{fontFamily:'Montserrat_400Regular',fontSize:12,textAlign:'center'}}>{detail.home_team.name_en}</Paragraph>
                             </View>
-                            <Paragraph style={{fontSize:40,paddingTop:40,fontFamily:'Teko_700Bold'}}>1 - 1</Paragraph>
-                            <View style={{marginLeft:(windowWidth/10), marginTop:(-windowWidth/20), alignItems:'center'}}>
-                                <Avatar.Image size={windowWidth/5}  source={{uri :'https://picsum.photos/700'}} />
-                                <Paragraph style={{fontFamily:'Montserrat_400Regular'}}>Real Madrid</Paragraph>
+                            <Paragraph style={{fontSize:30,paddingTop:30,fontFamily:'Teko_700Bold'}}>{detail.home_team.score}-{detail.away_team.score}</Paragraph>
+                            <View style={{ marginTop:(-windowWidth/50), alignItems:'center',width:100}}>
+                                <Avatar.Image size={windowWidth/5}  source={{uri : detail.away_team.logo}} style={{backgroundColor:'#FFFFFF'}} />
+                                <Paragraph style={{fontFamily:'Montserrat_400Regular',fontSize:12,fontSize:12,textAlign:'center'}}>{detail.away_team.name_en}</Paragraph>
                             </View>
                         </View>
                     </Card.Content>
                 </Card>
                 <Card style={styles.card}>
+                    {
+                    detail.techStats.length < 1 ?
                     <Card.Content style={{alignItems:'center'}}>
-                        <View style={styles.cardTextContainer}>
-                            <Paragraph style={styles.cardTextStatictic}>0</Paragraph>
-                            <Paragraph style={styles.cardTextStatictic}>Ball Position</Paragraph>
-                            <Paragraph style={styles.cardTextStatictic}>0</Paragraph>
-                        </View>
-                        <View style={styles.cardTextContainer}>
-                            <Paragraph style={styles.cardTextStatictic}>0</Paragraph>
-                            <Paragraph style={styles.cardTextStatictic}>Attack</Paragraph>
-                            <Paragraph style={styles.cardTextStatictic}>0</Paragraph>
-                        </View>
-                        <View style={styles.cardTextContainer}>
-                            <Paragraph style={styles.cardTextStatictic}>0</Paragraph>
-                            <Paragraph style={styles.cardTextStatictic}>Dangerous Attack</Paragraph>
-                            <Paragraph style={styles.cardTextStatictic}>0</Paragraph>
-                        </View>
-                        <View style={styles.cardTextContainer}>
-                            <Paragraph style={styles.cardTextStatictic}>0</Paragraph>
-                            <Paragraph style={styles.cardTextStatictic}>Shot Of Goal</Paragraph>
-                            <Paragraph style={styles.cardTextStatictic}>0</Paragraph>
-                        </View>
-                        <View style={styles.cardTextContainer}>
-                            <Paragraph style={styles.cardTextStatictic}>0</Paragraph>
-                            <Paragraph style={styles.cardTextStatictic}>Corner Kick</Paragraph>
-                            <Paragraph style={styles.cardTextStatictic}>0</Paragraph>
-                        </View>
-                        <View style={styles.cardTextContainer}>
-                            <Paragraph style={styles.cardTextStatictic}>0</Paragraph>
-                            <Paragraph style={styles.cardTextStatictic}>Penalty</Paragraph>
-                            <Paragraph style={styles.cardTextStatictic}>0</Paragraph>
-                        </View>
-                        <View style={styles.cardTextContainer}>
-                            <Paragraph style={styles.cardTextStatictic}>0</Paragraph>
-                            <Paragraph style={styles.cardTextStatictic}>Shot On Goal</Paragraph>
-                            <Paragraph style={styles.cardTextStatictic}>0</Paragraph>
-                        </View>
-                        <View style={styles.cardTextContainer}>
-                            <Paragraph style={styles.cardTextStatictic}>0</Paragraph>
-                            <Paragraph style={styles.cardTextStatictic}>Yellow Card</Paragraph>
-                            <Paragraph style={styles.cardTextStatictic}>0</Paragraph>
-                        </View>
-                        <View style={styles.cardTextContainer}>
-                            <Paragraph style={styles.cardTextStatictic}>0</Paragraph>
-                            <Paragraph style={styles.cardTextStatictic}>Red Card</Paragraph>
-                            <Paragraph style={styles.cardTextStatictic}>0</Paragraph>
-                        </View>
+                        <Title style={{ fontFamily:'Teko_400Regular', marginTop:(-windowWidth/40)}}>the statistics haven't been updated yet</Title>
+                    </Card.Content>:
+                    <Card.Content style={{alignItems:'center'}}>
+                        { detail.techStats.map(i => {
+                            return( i.typeName === 'BallPossession' ?
+                            <View style={styles.cardTextContainer} key={i.typeName}>
+                                <Paragraph style={styles.cardTextStatictic}>{i.home}</Paragraph>
+                                <Paragraph style={styles.cardTextStatictic}>Ball Position</Paragraph>
+                                <Paragraph style={styles.cardTextStatictic}>{i.away}</Paragraph>
+                            </View> :  (i.typeName === 'Attack' ? 
+                            <View style={styles.cardTextContainer} key={i.typeName}>
+                                <Paragraph style={styles.cardTextStatictic}>{i.home}</Paragraph>
+                                <Paragraph style={styles.cardTextStatictic}>Attack</Paragraph>
+                                <Paragraph style={styles.cardTextStatictic}>{i.away}</Paragraph>
+                            </View>
+                            : (i.typeName === 'DangerousAttack' ?
+                            <View style={styles.cardTextContainer} key={i.typeName}>
+                                <Paragraph style={styles.cardTextStatictic}>{i.home}</Paragraph>
+                                <Paragraph style={styles.cardTextStatictic}>Dangerous Attack</Paragraph>
+                                <Paragraph style={styles.cardTextStatictic}>{i.away}</Paragraph>
+                            </View>
+                            : (i.typeName === 'ShotOffGoal' ? 
+                            <View style={styles.cardTextContainer} key={i.typeName}>
+                                <Paragraph style={styles.cardTextStatictic}>{i.home}</Paragraph>
+                                <Paragraph style={styles.cardTextStatictic}>Shot Off Goal</Paragraph>
+                                <Paragraph style={styles.cardTextStatictic}>{i.away}</Paragraph>
+                            </View>
+                            : (i.typeName === 'CornerKick' ?
+                            <View style={styles.cardTextContainer} key={i.typeName}>
+                                <Paragraph style={styles.cardTextStatictic}>{i.home}</Paragraph>
+                                <Paragraph style={styles.cardTextStatictic}>Corner Kick</Paragraph>
+                                <Paragraph style={styles.cardTextStatictic}>{i.away}</Paragraph>
+                            </View>
+                            : (i.typeName === 'Penalty' ?
+                            <View style={styles.cardTextContainer} key={i.typeName}>
+                                <Paragraph style={styles.cardTextStatictic}>{i.home}</Paragraph>
+                                <Paragraph style={styles.cardTextStatictic}>Penalty</Paragraph>
+                                <Paragraph style={styles.cardTextStatictic}>{i.away}</Paragraph>
+                            </View>
+                            : (i.typeName === 'ShotOnGoal' ?
+                            <View style={styles.cardTextContainer} key={i.typeName}>
+                                <Paragraph style={styles.cardTextStatictic}>{i.home}</Paragraph>
+                                <Paragraph style={styles.cardTextStatictic}>Shot On Goal</Paragraph>
+                                <Paragraph style={styles.cardTextStatictic}>{i.away}</Paragraph>
+                            </View>
+                            : (i.typeName === 'YellowCard' ?
+                            <View style={styles.cardTextContainer} key={i.typeName}>
+                                <Paragraph style={styles.cardTextStatictic}>{i.home}</Paragraph>
+                                <Paragraph style={styles.cardTextStatictic}>Yellow Card</Paragraph>
+                                <Paragraph style={styles.cardTextStatictic}>{i.away}</Paragraph>
+                            </View>
+                            : 
+                            <View style={styles.cardTextContainer} key={i.typeName}>
+                                <Paragraph style={styles.cardTextStatictic}>{i.home}</Paragraph>
+                                <Paragraph style={styles.cardTextStatictic}>Red Card</Paragraph>
+                                <Paragraph style={styles.cardTextStatictic}>{i.away}</Paragraph>
+                            </View>
+                            )))))))
+                            )                                                        
+                        })}
                     </Card.Content>
+                    }
                 </Card>
                 </ImageBackground>
+            }
             </SafeAreaView>
         </View>
     )

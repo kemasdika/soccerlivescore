@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import {View, Text, StyleSheet,Dimensions,SafeAreaView, StatusBar, ScrollView,ImageBackground } from "react-native";
 import { 
     useFonts,
@@ -12,9 +12,22 @@ import {
 } from '@expo-google-fonts/montserrat'
 import AppLoading  from 'expo-app-loading'
 import {FinishedCard} from '../components/FinishedCard'
+import { fetchFinished } from '../store/actions/FinishedAction'
+import {fetchUpcoming} from '../store/actions/UpcomingAction'
+import {useSelector, useDispatch} from 'react-redux'
+import AnimatedLoader from "react-native-animated-loader";
 const windowWidth = Dimensions.get('window').width;
 
 export const FinishedSreen = ({navigation}) => {
+    const {finished, isLoading} = useSelector((state) => state.finished)
+    // console.log(finished,'>>> finishde')
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(fetchFinished())
+    },[])
+    useEffect(() => {
+        dispatch(fetchUpcoming())
+    },[])
     let [fontsLoaded] = useFonts({
         Teko_400Regular,
         Teko_600SemiBold,
@@ -29,12 +42,22 @@ export const FinishedSreen = ({navigation}) => {
         <View style={styles.center}>
             <StatusBar barStyle="light-content"></StatusBar>
             <SafeAreaView>
+            { isLoading ? 
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                    <Text>Loading ...</Text>
+                </View>
+                :
                 <ImageBackground source={require('../../assets/bg1.jpg')} style={styles.image}>
                     <Text style={styles.header}>FINISHED MATCH</Text>
-                    <ScrollView>
-                        <FinishedCard navigation={navigation}/>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        {
+                            finished.map(item => {
+                                return <FinishedCard navigation={navigation} key={item.gameId} item={item}/>
+                            })  
+                        }
                     </ScrollView>
                 </ImageBackground>
+            }
             </SafeAreaView>
         </View>
     )

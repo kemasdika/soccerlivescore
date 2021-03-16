@@ -32,14 +32,14 @@ export const UpcomingCard = ({item}) => {
                 <Title style={{ fontFamily:'Teko_400Regular', marginTop:(-windowWidth/40)}}>{item.matchTime}</Title>
                 <Paragraph style={{ fontFamily:'Teko_400Regular', fontSize:15, paddingTop:0}}>{item.eventName}</Paragraph>
                 <View style={{flexDirection:'row', paddingBottom:(windowWidth/50),justifyContent:'space-between',width:windowWidth-80}}>
-                    <View style={{ marginTop:(-windowWidth/50), alignItems:'center'}}>
+                    <View style={{ marginTop:(-windowWidth/50), alignItems:'center',width:100}}>
                         <Avatar.Image size={windowWidth/5} source={{uri : item.homeTeamEvent.logoUrl}} style={{backgroundColor:'#FFFFFF'}}/>
-                        <Paragraph style={{fontFamily:'Montserrat_400Regular',fontSize:12}}>{item.homeTeamEvent.name}</Paragraph>
+                        <Paragraph style={{fontFamily:'Montserrat_400Regular',fontSize:12,textAlign:'center'}}>{item.homeTeamEvent.name}</Paragraph>
                     </View>
                     <Paragraph style={{fontSize:30,paddingTop:30,fontFamily:'Teko_700Bold'}}>VS</Paragraph>
-                    <View style={{ marginTop:(-windowWidth/50), alignItems:'center'}}>
+                    <View style={{ marginTop:(-windowWidth/50), alignItems:'center',width:100}}>
                         <Avatar.Image size={windowWidth/5}  source={{uri : item.awayTeamEvent.logoUrl}} style={{backgroundColor:'#FFFFFF'}} />
-                        <Paragraph style={{fontFamily:'Montserrat_400Regular',fontSize:12}}>{item.homeTeamEvent.name}</Paragraph>
+                        <Paragraph style={{fontFamily:'Montserrat_400Regular',fontSize:12,fontSize:12,textAlign:'center'}}>{item.awayTeamEvent.name}</Paragraph>
                     </View>
                 </View>
             </Card.Content>

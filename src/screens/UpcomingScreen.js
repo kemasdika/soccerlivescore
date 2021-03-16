@@ -13,7 +13,9 @@ import {
 import AppLoading  from 'expo-app-loading'
 import {UpcomingCard} from '../components/UpcomingCard'
 import {fetchUpcoming} from '../store/actions/UpcomingAction'
+import { fetchFinished } from '../store/actions/FinishedAction'
 import {useSelector, useDispatch} from 'react-redux'
+import AnimatedLoader from "react-native-animated-loader";
 const windowWidth = Dimensions.get('window').width;
 
 export const UpcomingScreen = () => {
@@ -22,7 +24,9 @@ export const UpcomingScreen = () => {
     useEffect(() => {
         dispatch(fetchUpcoming())
     },[])
-
+    useEffect(() => {
+        dispatch(fetchFinished())
+    },[])
     let [fontsLoaded] = useFonts({
         Teko_400Regular,
         Teko_600SemiBold,
@@ -38,9 +42,13 @@ export const UpcomingScreen = () => {
             <StatusBar barStyle="light-content"></StatusBar>
             <SafeAreaView>
             { isLoading ? 
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                    <Text>Loading ...</Text>
-                </View>
+                <AnimatedLoader
+                overlayColor="rgba(255,255,255,0.75)"
+                source={require("../../assets/loader.json")}
+                animationStyle={styles.lottie}
+                speed={1}
+                >
+                </AnimatedLoader>
                 :
                 <ImageBackground source={require('../../assets/bg1.jpg')} style={styles.image}>
                 <Text style={styles.header}>UPCOMING MATCH</Text>
@@ -76,4 +84,8 @@ const styles = StyleSheet.create({
         marginBottom:(windowWidth/20),
         color: '#F2F2F2'
     },
+    lottie: {
+        width: 100,
+        height: 100
+      }
   });
