@@ -4,6 +4,7 @@
 UI/UX Design
 
 <img width="300" src="./assets/uiux.jpg" alt="list">
+![Alt text](./assets/uiux.jpg?raw=true "Title")
 
 FIGMA : https://www.figma.com/file/e7760bQwMwqF3Zmbq3ucE0/ui-ux-soccerscore?node-id=0%3A1
 
